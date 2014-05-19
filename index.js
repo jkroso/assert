@@ -36,14 +36,12 @@ module.exports = function(expr, msg){
   if (!msg) {
     if (Error.captureStackTrace) {
       var callsite = stack()[1];
-      var fn = callsite.getFunctionName();
       var file = callsite.getFileName();
       var line = callsite.getLineNumber() - 1;
       var col = callsite.getColumnNumber() - 1;
-      var src = getScript(file);
-      line = src.split('\n')[line].slice(col);
-      expr = line.match(/assert\((.*)\)/)[1].trim();
-      msg = expr;
+      var src = getScript(file).split('\n')[line];
+      var m = src.slice(col).match(/assert\((.*)\)/);
+      msg = m && m[1].trim() || src.trim();
     } else {
       msg = 'assertion failed';
     }
