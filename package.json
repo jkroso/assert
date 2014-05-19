@@ -1,9 +1,9 @@
 {
   "name": "assert",
   "description": "Assertion lib",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "keywords": ["assert", "test"],
   "dependencies": {
-    "stack": "http://github.com/component/stack/tarball/master"
+    "stack": "component/stack"
   }
 }
