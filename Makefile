@@ -1,11 +1,11 @@
 
-build: components index.js
-	@component build
+serve: node_modules
+	@node_modules/serve/bin/serve -Slojp 0
 
-components:
-	@Component install
+test: node_modules
+	@node example.js
 
-clean:
-	rm -fr build components
+node_modules: package.json
+	@packin install --meta $< --folder $@
 
-.PHONY: clean
+.PHONY: serve test
