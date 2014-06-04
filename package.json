@@ -4,6 +4,11 @@
   "version": "0.2.2",
   "keywords": ["assert", "test"],
   "dependencies": {
-    "stack": "component/stack"
+    "stack": "component/stack",
+    "match": "jkroso/match",
+    "equals": "*"
+  },
+  "devDependencies": {
+    "serve": "jkroso/serve"
   }
 }
