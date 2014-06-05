@@ -18,7 +18,9 @@ var assert = require('./');
     }, /Boom/)
   },
   function() {
-    assert.throws(function() {})
+    assert.throws(function() {
+      1 + NaN
+    })
   }
 ].forEach(function(fn) {
   try { fn() }

@@ -1,11 +1,12 @@
 {
   "name": "assert",
   "description": "Assertion lib",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "keywords": ["assert", "test"],
   "dependencies": {
     "stack": "component/stack",
     "match": "jkroso/match",
+    "function-source": "*",
     "equals": "*"
   },
   "devDependencies": {

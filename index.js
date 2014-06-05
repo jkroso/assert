@@ -1,7 +1,9 @@
 
-var equal = require('equals');
-var stack = require('stack');
-var match = require('match');
+var src = require('function-source')
+var equal = require('equals')
+var stack = require('stack')
+var match = require('match')
+var json = JSON.stringify
 
 /**
  * Load contents of `script`.
@@ -13,13 +15,13 @@ var match = require('match');
 
 var getScript = typeof window == 'undefined'
   ? function(script){
-    return require('fs').readFileSync(script, 'utf8');
+    return require('fs').readFileSync(script, 'utf8')
   }
   : function(script){
-    var xhr = new XMLHttpRequest;
-    xhr.open('GET', script, false);
-    xhr.send(null);
-    return xhr.responseText;
+    var xhr = new XMLHttpRequest
+    xhr.open('GET', script, false)
+    xhr.send(null)
+    return xhr.responseText
   }
 
 /**
@@ -31,8 +33,8 @@ var getScript = typeof window == 'undefined'
  */
 
 function assert(expr, msg){
-  if (!expr) throw new Error(msg || message());
-};
+  if (!expr) throw new Error(msg || message())
+}
 
 /**
  * Create a message from the call stack.
@@ -42,14 +44,14 @@ function assert(expr, msg){
  */
 
 function message() {
-  if (!Error.captureStackTrace) return 'assertion failed';
-  var callsite = stack()[2];
-  var file = callsite.getFileName();
-  var line = callsite.getLineNumber() - 1;
-  var col = callsite.getColumnNumber() - 1;
-  var src = getScript(file);
-  line = src.split('\n')[line];
-  var m = line.slice(col).match(/assert\((.*)\)/);
+  if (!Error.captureStackTrace) return 'assertion failed'
+  var callsite = stack()[2]
+  var file = callsite.getFileName()
+  var line = callsite.getLineNumber() - 1
+  var col = callsite.getColumnNumber() - 1
+  var src = getScript(file)
+  line = src.split('\n')[line]
+  var m = line.slice(col).match(/assert\((.*)\)/)
   return (m ? m[1] : line).trim()
 }
 
@@ -96,15 +98,15 @@ assert.throws = function(fn, msg) {
   catch (e) {
     if (!msg) return
     if (typeof msg == 'function') {
-      assert(e instanceof msg, 'expected an "' + msg.name + '" to be thrown')
+      assert(e instanceof msg, 'expected an ' + msg.name + ' to be thrown')
     } else {
       assert(match(e.message, msg), ''
         + 'error.message "' + e.message + '" does not match '
-        + (msg instanceof RegExp ? msg.toString() : '"' + msg + '"'))
+        + (msg instanceof RegExp ? msg.toString() : json(msg)))
     }
     return
   }
-  throw new Error('expected an error to be thrown')
+  throw new Error('expected an error in: ' + json(src(fn).trim()))
 }
 
 module.exports = assert
