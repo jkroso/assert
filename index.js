@@ -32,8 +32,8 @@ var getScript = typeof window == 'undefined'
  * @api public
  */
 
-function assert(expr, msg){
-  if (!expr) throw new Error(msg || message())
+function assert(expr, msg, depth){
+  if (!expr) throw new Error(msg || message(depth || 0))
 }
 
 /**
@@ -43,9 +43,9 @@ function assert(expr, msg){
  * @api private
  */
 
-function message() {
+function message(depth) {
   if (!Error.captureStackTrace) return 'assertion failed'
-  var callsite = stack()[2]
+  var callsite = stack()[2 + depth]
   var file = callsite.getFileName()
   var line = callsite.getLineNumber() - 1
   var col = callsite.getColumnNumber() - 1
@@ -64,11 +64,11 @@ function message() {
  */
 
 assert.equal = function(a, b, msg) {
-  assert(equal(a, b), msg || message(1))
+  assert(equal(a, b), msg, 1)
 }
 
 assert.notEqual = function(a, b, msg) {
-  assert(!equal(a, b), msg || message(1))
+  assert(!equal(a, b), msg, 1)
 }
 
 /**
@@ -79,11 +79,11 @@ assert.notEqual = function(a, b, msg) {
  */
 
 assert.match = function(a, pattern, msg) {
-  assert(match(a, pattern), msg)
+  assert(match(a, pattern), msg, 1)
 }
 
 assert.notMatch = function(a, pattern, msg) {
-  assert(!match(a, pattern), msg)
+  assert(!match(a, pattern), msg, 1)
 }
 
 /**
